@@ -131,6 +131,7 @@
               @update="refresh"
             />
             <SessionPlay
+              :authenticated="item.authenticated && item.log"
               :uid="item.uid"
             />
           </template>
