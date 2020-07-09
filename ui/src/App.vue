@@ -172,6 +172,11 @@ export default {
       ],
       menu: [
         {
+          title: 'Settings',
+          type: 'path',
+          path: '/settings',
+        },
+        {
           title: 'Logout',
           type: 'method',
           method: 'logout',
