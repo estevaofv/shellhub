@@ -197,9 +197,13 @@ func (s *Session) connect(passwd string, session sshserver.Session, conn net.Con
 				}
 				waitingString += string(buf[:n])
 				var sessionRecord struct {
-					Log string `json:"log"`
+					Log    string `json:"log"`
+					Height int    `json:"height"`
+					Width  int    `json:"width"`
 				}
 				sessionRecord.Log = waitingString
+				sessionRecord.Height = pty.Window.Height
+				sessionRecord.Width = pty.Window.Width
 				_, _, _ = gorequest.New().Post(fmt.Sprintf("http://api:8080/internal/sessions/%s/record", s.UID)).Send(sessionRecord).End()
 				waitingString = ""
 			}

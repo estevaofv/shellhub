@@ -88,8 +88,10 @@ func FinishSession(c apicontext.Context) error {
 }
 func RecordSession(c apicontext.Context) error {
 	var req struct {
-		UID string `json:"uid"`
-		Log string `json:"log"`
+		UID    string `json:"uid"`
+		Log    string `json:"log"`
+		Width  int    `json:"width"`
+		Height int    `json:"height"`
 	}
 	if err := c.Bind(&req); err != nil {
 		return err
@@ -97,7 +99,7 @@ func RecordSession(c apicontext.Context) error {
 
 	svc := sessionmngr.NewService(c.Store())
 
-	return svc.RecordSession(c.Ctx(), models.UID(c.Param("uid")), req.Log)
+	return svc.RecordSession(c.Ctx(), models.UID(c.Param("uid")), req.Log, req.Width, req.Height)
 }
 
 func PlaySession(c apicontext.Context) error {
