@@ -91,6 +91,25 @@ var migrations = []migrate.Migration{
 			return err
 		},
 	},
+	{
+		Version: 7,
+		Up: func(db *mongo.Database) error {
+			mod := mongo.IndexModel{
+				Keys:    bson.D{{"log", 1}},
+				Options: options.Index().SetName("log").SetUnique(false),
+			}
+			_, err := db.Collection("sessions").Indexes().CreateOne(context.TODO(), mod)
+			_, err = db.Collection("sessions").UpdateMany(context.TODO(), bson.M{}, bson.M{"$set": bson.M{"log": false}})
+
+			return err
+		},
+		Down: func(db *mongo.Database) error {
+			_, err := db.Collection("sessions").UpdateMany(context.TODO(), bson.M{}, bson.M{"$unset": bson.M{"log": ""}})
+			_, err = db.Collection("sessions").Indexes().DropOne(context.TODO(), "log")
+
+			return err
+		},
+	},
 }
 
 func ApplyMigrations(db *mongo.Database) error {
