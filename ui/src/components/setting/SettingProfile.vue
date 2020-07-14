@@ -76,6 +76,11 @@
               disabled
               @click:append="show1 = !show1"
             />
+            <v-btn
+              @click="postUser()"
+            >
+              Greet
+            </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -106,6 +111,12 @@ export default {
 
     email() {
       return this.$store.getters['auth/email'];
+    },
+  },
+
+  methods: {
+    postUser() {
+      this.$store.dispatch('users/setUser', 'teste');
     },
   },
 
